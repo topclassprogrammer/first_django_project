@@ -16,6 +16,7 @@ Including another URLconf
 
 from django.urls import path
 
-urlpatterns = [
-    # здесь зарегистрируйте вашу view-функцию
-]
+from calculator.views import dish_view
+
+slugs = ['omlet/', 'pasta/', 'buter/']
+urlpatterns = [path(slug, dish_view) for slug in slugs]
