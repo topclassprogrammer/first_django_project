@@ -1,4 +1,7 @@
 id;name;image;price;release_date;lte_exists
 1;Samsung Galaxy Edge 2;https://avatars.mds.yandex.net/get-mpic/364668/img_id5636027222104023144.jpeg/orig;73000;2016-12-12;True
-2;Iphone X;https://avatars.mds.yandex.net/get-mpic/200316/img_id270362589725797013.png/orig;80000;2017-06-01;True
-3;Nokia 8;https://avatars.mds.yandex.net/get-mpic/397397/img_id6752445806321208103.jpeg/orig;20000;2013-01-20;False
+2;Iphone X;https://m.media-amazon.com/images/I/613qbPmRyEL._AC_UF1000,1000_QL80_.jpg;80000;2017-06-01;True
+3;Nokia 8;https://www.android.com/static/2016/img/devices/phones/nokia-8/nokia-8-polished-blue-front_1x.png;20000;2013-01-20;False
+4;Google Pixel 8 Pro;https://rukminim2.flixcart.com/image/850/1000/xif0q/mobile/y/e/6/-original-imagtwh4vnkzsrsg.jpeg?q=90&crop=false;59000;2023-10-12;True
+5;Asus ROG Phone 8 Pro;https://cdn-files.kimovil.com/phone_front/0009/71/thumb_870514_phone_front_big.jpg;72000;2024-01-18;True
+6;OnePlus 12;https://cdn1.smartprix.com/rx-iAkhoG7mx-w1200-h1200/AkhoG7mx.jpg;65000;2024-02-06;True

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Подробнее о книге{% endblock %}
+{% block content %}
+    <div class="container">
+        {% include 'books/books_list.html' %}
+    {% if previous_page %}
+        <a href="{{ previous_page|date:'Y-m-d' }}">< {{ previous_page|date:'Y-m-d' }}</a>
+    {% endif %}
+    {% if next_page %}
+        <a href="{{ next_page|date:'Y-m-d' }}">> {{ next_page|date:'Y-m-d' }}</a>
+    {% endif %}
+
+    </div>
+{% endblock %}

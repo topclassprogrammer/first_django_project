@@ -5,7 +5,7 @@
     "fields": {
       "name": "Война и мир",
       "author": "Л.Н. Толстой",
-      "pub_date": "2018-02-27"
+      "pub_date": "2018-09-03"
     }
   },
   {
@@ -14,7 +14,43 @@
     "fields": {
       "name": "1984",
       "author": "Джордж Оруэл",
-      "pub_date": "2016-12-06"
+      "pub_date": "2018-09-07"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 3,
+    "fields": {
+      "name": "Скотный двор",
+      "author": "Джордж Оруэл",
+      "pub_date": "2018-09-15"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 4,
+    "fields": {
+      "name": "В память о прошлом земли",
+      "author": "Лю Цысинь",
+      "pub_date": "2018-09-07"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 5,
+    "fields": {
+      "name": "Метро 2033",
+      "author": "Дмитрий Глуховский",
+      "pub_date": "2018-09-21"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 6,
+    "fields": {
+      "name": "Стивен Кинг",
+      "author": "Сияние",
+      "pub_date": "2018-09-12"
     }
   }
 ]

@@ -55,7 +55,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
         'USER': 'postgres',
-        'PASSWORD': 'ваш пароль',
+        'PASSWORD': '123456',
     }
 }
 
@@ -118,5 +118,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+PHONES_CSV = os.path.join(BASE_DIR, 'phones.csv')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
