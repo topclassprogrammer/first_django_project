@@ -5,11 +5,20 @@
 {% block content %}
     <div class="container">
         {% include 'books/books_list.html' %}
-    {% if previous_page %}
-        <a href="{{ previous_page|date:'Y-m-d' }}">< {{ previous_page|date:'Y-m-d' }}</a>
+{#<!-- Моя реализация -->#}
+{#    {% if previous_page %}#}
+{#        <a href="{{ previous_page|date:'Y-m-d' }}">< {{ previous_page|date:'Y-m-d' }}</a>#}
+{#    {% endif %}#}
+{#    {% if next_page %}#}
+{#        <a href="{{ next_page|date:'Y-m-d' }}">> {{ next_page|date:'Y-m-d' }}</a>#}
+{#    {% endif %}#}
+
+<!-- Реализация ментора -->
+    {% if previous_book %}
+        <a href="{{ previous_book.pub_date|date:'Y-m-d' }}">< {{ previous_book.pub_date|date:'Y-m-d' }}</a>
     {% endif %}
-    {% if next_page %}
-        <a href="{{ next_page|date:'Y-m-d' }}">> {{ next_page|date:'Y-m-d' }}</a>
+    {% if next_book %}
+        <a href="{{ next_book.pub_date|date:'Y-m-d' }}">> {{ next_book.pub_date|date:'Y-m-d' }}</a>
     {% endif %}
 
     </div>
