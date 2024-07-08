@@ -70,9 +70,9 @@ Content-Type: application/json
 {
   "positions": [
     {
-      "product": 2,
-      "quantity": 100,
-      "price": 130.80
+      "product": 1,
+      "quantity": 1000,
+      "price": 1300.80
     },
     {
       "product": 3,
