@@ -4,14 +4,13 @@ from django.db import models
 
 class AdvertisementStatusChoices(models.TextChoices):
     """Статусы объявления."""
-
     OPEN = "OPEN", "Открыто"
     CLOSED = "CLOSED", "Закрыто"
+    DRAFT = "DRAFT", "Черновик"
 
 
 class Advertisement(models.Model):
     """Объявление."""
-
     title = models.TextField()
     description = models.TextField(default='')
     status = models.TextField(
@@ -28,3 +27,15 @@ class Advertisement(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
+
+
+class Favourites(models.Model):
+    """Избранное"""
+    advertisement = models.ForeignKey(
+        Advertisement,
+        on_delete=models.CASCADE,
+        related_name='favourites')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='favourites')

@@ -1,12 +1,13 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
-from advertisements.models import Advertisement
+from advertisements.models import Advertisement, AdvertisementStatusChoices
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer для пользователя."""
-
+    """Сериализатор для пользователя."""
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name',
@@ -14,32 +15,28 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
-    """Serializer для объявления."""
-
+    """Сериализатор для объявления."""
     creator = UserSerializer(
-        read_only=True,
-    )
+        read_only=True,)
 
     class Meta:
         model = Advertisement
         fields = ('id', 'title', 'description', 'creator',
-                  'status', 'created_at', )
+                  'status', 'created_at',)
 
     def create(self, validated_data):
-        """Метод для создания"""
-
-        # Простановка значения поля создатель по-умолчанию.
-        # Текущий пользователь является создателем объявления
-        # изменить или переопределить его через API нельзя.
-        # обратите внимание на `context` – он выставляется автоматически
-        # через методы ViewSet.
-        # само поле при этом объявляется как `read_only=True`
+        """Создание объекта в БД"""
         validated_data["creator"] = self.context["request"].user
         return super().create(validated_data)
 
     def validate(self, data):
-        """Метод для валидации. Вызывается при создании и обновлении."""
-
-        # TODO: добавьте требуемую валидацию
-
+        """Валидируем входящие данные при создании и обновлении объявления,
+        чтобы у пользователя было не больше 10 открытых объявлений"""
+        user = self.context['request'].user
+        user_status_queryset = Advertisement.objects.filter(
+            creator=user, status=AdvertisementStatusChoices.OPEN)
+        status_count = user_status_queryset.aggregate(
+            Count('status'))['status__count']
+        if status_count >= 10:
+            raise ValidationError('У вас больше 10 открытых объявлений')
         return data
