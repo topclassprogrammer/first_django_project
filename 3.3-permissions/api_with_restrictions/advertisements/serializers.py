@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.db.models import Count
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -35,8 +34,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         user_status_queryset = Advertisement.objects.filter(
             creator=user, status=AdvertisementStatusChoices.OPEN)
-        status_count = user_status_queryset.aggregate(
-            Count('status'))['status__count']
+        status_count = user_status_queryset.count()
         if status_count >= 10:
             raise ValidationError('У вас больше 10 открытых объявлений')
         return data

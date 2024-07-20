@@ -1,7 +1,6 @@
-from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -9,7 +8,8 @@ from rest_framework.viewsets import ModelViewSet
 from advertisements.filters import AdvertisementFilter
 from advertisements.models import Advertisement, Favourites, \
     AdvertisementStatusChoices
-from advertisements.permissions import IsOwnerOrReadOnly, IsAvailableToRetrieve
+from advertisements.permissions import IsOwnerOrReadOnly, \
+    IsAllowedToAddToFavourites
 from advertisements.serializers import AdvertisementSerializer
 
 
@@ -19,6 +19,33 @@ class AdvertisementViewSet(ModelViewSet):
     serializer_class = AdvertisementSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvertisementFilter
+
+    def get_queryset(self):
+        open_closed_ads = Advertisement.objects.filter(status__in=(
+                AdvertisementStatusChoices.OPEN,
+                AdvertisementStatusChoices.CLOSED))
+        # Если пользователь является администратором
+        if self.request.user.is_staff is True:
+            draft_ads = Advertisement.objects.filter(
+                status=AdvertisementStatusChoices.DRAFT)
+        # Если пользователь аутентифицирован, но не администратор
+        elif isinstance(self.request.user, User):
+            draft_ads = Advertisement.objects.filter(
+                creator=self.request.user,
+                status=AdvertisementStatusChoices.DRAFT)
+        # Если пользователь не аутентифицирован
+        else:
+            draft_ads = Advertisement.objects.none()
+
+        return open_closed_ads | draft_ads
+
+    def get_permissions(self):
+        """Получение прав для действий."""
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return [IsAuthenticated(), IsOwnerOrReadOnly()]
+        elif self.action == 'to_favourites':
+            return [IsAllowedToAddToFavourites()]
+        return []
 
     def list(self, request, *args, **kwargs):
         """Получение списка объявлений"""
@@ -34,52 +61,18 @@ class AdvertisementViewSet(ModelViewSet):
         # Если в GET-запросе есть доступный параметр-фильтр,
         # то выполняем фильтрацию
         if filter_param in available_filter_params:
-            queryset = self.filter_queryset(self.queryset)
+            queryset = self.filter_queryset(self.get_queryset())
         else:
-            open_closed_ads = Advertisement.objects.filter(status__in=(
-                AdvertisementStatusChoices.OPEN,
-                AdvertisementStatusChoices.CLOSED))
-            # Если пользователь не аутентифицирован
-            if isinstance(request.user, AnonymousUser):
-                draft_ads = Advertisement.objects.none()
-            # Если пользователь является администратором
-            elif request.user.is_staff is True:
-                draft_ads = Advertisement.objects.filter(
-                    status=AdvertisementStatusChoices.DRAFT)
-            # Если пользователь аутентифицирован
-            elif isinstance(request.user, User):
-                draft_ads = Advertisement.objects.filter(
-                    creator=request.user,
-                    status=AdvertisementStatusChoices.DRAFT)
-            queryset = open_closed_ads.union(draft_ads)
+            queryset = self.get_queryset()
+
         serializer = AdvertisementSerializer(queryset, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def to_favourites(self, request, pk=None):
         """Добавление объявления в избранное"""
-        if not Advertisement.objects.filter(id=pk):
-            raise ValidationError(f'Объявления с id {pk} нет в базе')
-        elif Favourites.objects.filter(
-                user_id=request.user.id, advertisement_id=pk):
-            raise ValidationError(f'Объявление с id {pk} уже есть в избранном')
-        elif request.user.id == Advertisement.objects.get(id=pk).creator.id:
-            raise ValidationError('Вы не можете добавлять в избранное '
-                                  'свое собственное объявление')
-        elif request.user.id != Advertisement.objects.get(id=pk).creator.id \
-                and Advertisement.objects.get(id=pk).status == \
-                AdvertisementStatusChoices.DRAFT:
-            raise ValidationError('Вы не можете добавлять в избранное чужое '
-                                  'объявление находящиеся в статусе черновика')
-
+        self.serializer_class(data=request.data,
+                              context={'request': request}).is_valid()
         Favourites.objects.create(user_id=request.user.id, advertisement_id=pk)
         return Response({'message': f'Объявление с id {pk} '
                         f'успешно добавлено в избранное'})
-
-    def get_permissions(self):
-        """Получение прав для действий."""
-        if self.action == 'retrieve':
-            return [IsAvailableToRetrieve()]
-        elif self.action in ["create", "update", "partial_update", "destroy"]:
-            return [IsAuthenticated(), IsOwnerOrReadOnly()]
-        return []

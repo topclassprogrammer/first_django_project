@@ -5,21 +5,21 @@
 # получение объявлений
 GET {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 779394d51a34dcbbfacb1bb3fd0b606382992125
 
 ###
 
 # получение конкретного объявления
-GET {{baseUrl}}/advertisements/5/
+GET {{baseUrl}}/advertisements/50/
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 779394d51a34dcbbfacb1bb3fd0b606382992125
 
 ###
 
 # создание объявления
 POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 0c661797841f24f559d494e0c29b2d5a8b32eefc
 
 {
   "title": "Шкаф IKEA",
@@ -29,9 +29,9 @@ Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
 ###
 
 # попытка изменить объявление
-PATCH {{baseUrl}}/advertisements/8/
+PATCH {{baseUrl}}/advertisements/2/
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 779394d51a34dcbbfacb1bb3fd0b606382992125
 
 {
   "status": "CLOSED"
@@ -40,41 +40,41 @@ Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
 ###
 
 # попытка удалить объявление
-DELETE {{baseUrl}}/advertisements/8/
+DELETE {{baseUrl}}/advertisements/19/
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 779394d51a34dcbbfacb1bb3fd0b606382992125
 
 ###
 
 # фильтрация по создателю объявления
 GET {{baseUrl}}/advertisements/?creator=3
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 779394d51a34dcbbfacb1bb3fd0b606382992125
 
 ###
 
 # фильтрация по дате создания объявления
-GET {{baseUrl}}/advertisements/?created_at_before=2024-07-07
+GET {{baseUrl}}/advertisements/?created_at_before=2024-07-15
 Content-Type: application/json
+Authorization: Token 0c661797841f24f559d494e0c29b2d5a8b32eefc
 
 ###
 
 # фильтрация по статусу объявления
 GET {{baseUrl}}/advertisements/?status=CLOSED
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 0c661797841f24f559d494e0c29b2d5a8b32eefc
 
 ###
 
 # добавить в избранное объявление по id
-POST {{baseUrl}}/advertisements/3/to_favourites/
+POST {{baseUrl}}/advertisements/52/to_favourites/
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 0c661797841f24f559d494e0c29b2d5a8b32eefc
 
-{"title": "test"}
 ###
 
 # просмотр объявлений добавленных в избранное
 GET {{baseUrl}}/advertisements/?favourites_by=1
 Content-Type: application/json
-Authorization: Token a2941a6d1b5868204279ce8c0308ee33447f21a4
+Authorization: Token 779394d51a34dcbbfacb1bb3fd0b606382992125
