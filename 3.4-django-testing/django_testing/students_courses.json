@@ -1,0 +1,53 @@
+[
+  {
+    "model": "students.Student",
+    "pk": 1,
+    "fields": {
+      "name": "Дарья Соловьева",
+      "birth_date": "2004-04-27"
+    }
+  },
+  {
+    "model": "students.Student",
+    "pk": 2,
+    "fields": {
+      "name": "Анастасия Великая"
+    }
+  },
+  {
+    "model": "students.Student",
+    "pk": 3,
+    "fields": {
+      "name": "Виктория Ломова",
+      "birth_date": "2005-08-14"
+    }
+  },
+  {
+    "model": "students.Student",
+    "pk": 4,
+    "fields": {
+      "name": "Вероника Кротова"
+    }
+  },
+
+
+  {
+    "model": "students.Course",
+    "pk": 1,
+    "fields": {
+      "name": "Python",
+      "students": ["3", "1", "2"]
+    }
+  },
+  {
+    "model": "students.Course",
+    "pk": 2,
+    "fields": {
+      "name": "C++",
+      "students": ["2", "4"]
+    }
+  }
+]
+
+
+
